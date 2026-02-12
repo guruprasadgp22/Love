@@ -534,7 +534,6 @@ const PROMISES = [
 
 export default function ValentineProposal() {
   const [yesClicked, setYesClicked] = useState(false);
-  const [noPos, setNoPos] = useState({ x: null, y: null });
   const [noMoved, setNoMoved] = useState(0);
   const [cursor, setCursor] = useState({ x: -100, y: -100 });
   const [confetti, setConfetti] = useState([]);
@@ -550,18 +549,23 @@ export default function ValentineProposal() {
   // Scroll fade-in
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("visible");
+        }),
       { threshold: 0.15 }
     );
     fadeRefs.current.forEach((el) => el && obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
-  // Confetti
+  // Confetti burst on Yes
   const launchConfetti = () => {
     const pieces = Array.from({ length: 40 }, (_, i) => ({
       id: i,
-      emoji: ["💗", "💖", "🌸", "✨", "💝", "🌹", "💕", "⭐"][Math.floor(Math.random() * 8)],
+      emoji: ["💗", "💖", "🌸", "✨", "💝", "🌹", "💕", "⭐"][
+        Math.floor(Math.random() * 8)
+      ],
       left: Math.random() * 100,
       delay: Math.random() * 2,
       duration: 2 + Math.random() * 3,
@@ -574,11 +578,13 @@ export default function ValentineProposal() {
     launchConfetti();
   };
 
+  // "No" button runs away on hover — uses direct DOM style, no state needed
   const handleNoHover = (e) => {
     const btn = e.currentTarget;
-    const vw = window.innerWidth, vh = window.innerHeight;
-    let nx = Math.random() * (vw - 120);
-    let ny = Math.random() * (vh - 60);
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const nx = Math.random() * (vw - 140);
+    const ny = Math.random() * (vh - 70);
     btn.style.position = "fixed";
     btn.style.left = nx + "px";
     btn.style.top = ny + "px";
@@ -586,9 +592,11 @@ export default function ValentineProposal() {
     setNoMoved((n) => n + 1);
   };
 
-  const addFadeRef = (el) => { if (el && !fadeRefs.current.includes(el)) fadeRefs.current.push(el); };
+  const addFadeRef = (el) => {
+    if (el && !fadeRefs.current.includes(el)) fadeRefs.current.push(el);
+  };
 
-  // Float hearts
+  // Floating hearts config
   const floatHearts = Array.from({ length: 18 }, (_, i) => ({
     id: i,
     emoji: FLOAT_HEARTS[i % FLOAT_HEARTS.length],
@@ -602,8 +610,10 @@ export default function ValentineProposal() {
     <>
       <style>{style}</style>
 
-      {/* Custom cursor */}
-      <div className="cursor" style={{ left: cursor.x, top: cursor.y }}>💗</div>
+      {/* Custom heart cursor */}
+      <div className="cursor" style={{ left: cursor.x, top: cursor.y }}>
+        💗
+      </div>
 
       {/* Floating hearts background */}
       <div className="hearts-bg">
@@ -617,29 +627,47 @@ export default function ValentineProposal() {
               animationDelay: `${h.delay}s`,
               animationDuration: `${h.duration}s`,
             }}
-          >{h.emoji}</span>
+          >
+            {h.emoji}
+          </span>
         ))}
       </div>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <div className="hero">
         <div className="hero-envelope">💌</div>
         <h1 className="hero-title">My Dearest Love</h1>
-        <p className="hero-subtitle">A Valentine's message, written just for you</p>
+        <p className="hero-subtitle">
+          A Valentine's message, written just for you
+        </p>
         <div className="divider">♥ ♥ ♥</div>
         <div className="scroll-hint">💕</div>
       </div>
 
-      {/* WHY I LOVE YOU */}
+      {/* ── REASONS I LOVE YOU ── */}
       <section ref={addFadeRef} className="fade-in">
         <span className="section-label">with all my heart</span>
-        <h2 className="section-title">Reasons I Fall for You, <em>Every Day</em></h2>
-        <p style={{ color: "var(--soft)", lineHeight: 1.8, fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
-          There are a million reasons why I love you — here are just a few that I keep close to my heart...
+        <h2 className="section-title">
+          Reasons I Fall for You, <em>Every Day</em>
+        </h2>
+        <p
+          style={{
+            color: "var(--soft)",
+            lineHeight: 1.8,
+            fontFamily: "'Playfair Display', serif",
+            fontStyle: "italic",
+          }}
+        >
+          There are a million reasons why I love you — here are just a few
+          that I keep close to my heart...
         </p>
         <div className="reasons-grid">
           {REASONS.map((r, i) => (
-            <div key={i} className="reason-card" style={{ animationDelay: `${i * 0.1}s` }}>
+            <div
+              key={i}
+              className="reason-card"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
               <span className="reason-icon">{r.icon}</span>
               <div className="reason-title">{r.title}</div>
               <div className="reason-text">{r.text}</div>
@@ -648,18 +676,34 @@ export default function ValentineProposal() {
         </div>
       </section>
 
-      {/* OUR MEMORIES PHOTO GRID */}
-      <section className="photo-section" ref={addFadeRef} style={{ zIndex: 1 }} >
+      {/* ── PHOTO MEMORIES ── */}
+      <section
+        className="photo-section"
+        ref={addFadeRef}
+        style={{ zIndex: 1 }}
+      >
         <div className="fade-in" ref={addFadeRef}>
           <span className="section-label">our story</span>
-          <h2 className="section-title">Moments I <em>Treasure</em> Forever</h2>
-          <p style={{ color: "var(--soft)", fontFamily: "'Playfair Display', serif", fontStyle: "italic", lineHeight: 1.8 }}>
-            Every moment with you becomes my favourite memory. Replace these with your real photos!
+          <h2 className="section-title">
+            Moments I <em>Treasure</em> Forever
+          </h2>
+          <p
+            style={{
+              color: "var(--soft)",
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: "italic",
+              lineHeight: 1.8,
+            }}
+          >
+            Every moment with you becomes my favourite memory. Replace these
+            with your real photos!
           </p>
           <div className="photo-grid">
             {PHOTOS.map((p, i) => (
               <div key={i} className="photo-frame">
-                <span style={{ fontSize: i === 0 ? "5rem" : "3.5rem" }}>{p.emoji}</span>
+                <span style={{ fontSize: i === 0 ? "5rem" : "3.5rem" }}>
+                  {p.emoji}
+                </span>
                 <div className="photo-label">{p.label}</div>
               </div>
             ))}
@@ -667,28 +711,44 @@ export default function ValentineProposal() {
         </div>
       </section>
 
-      {/* PROMISES */}
-      <div style={{ padding: "2rem 1rem", position: "relative", zIndex: 1 }} ref={addFadeRef} className="fade-in">
+      {/* ── PROMISES ── */}
+      <div
+        style={{ padding: "2rem 1rem", position: "relative", zIndex: 1 }}
+        ref={addFadeRef}
+        className="fade-in"
+      >
         <div className="promise-section">
           <span className="section-label">from the bottom of my heart</span>
-          <h2 className="section-title">My Promises <em>To You</em></h2>
+          <h2 className="section-title">
+            My Promises <em>To You</em>
+          </h2>
           <ul className="promise-list">
-            {PROMISES.map((p, i) => <li key={i}>{p}</li>)}
+            {PROMISES.map((p, i) => (
+              <li key={i}>{p}</li>
+            ))}
           </ul>
-          <div style={{ marginTop: "1.5rem", fontSize: "2rem" }}>💍🌹💍</div>
+          <div style={{ marginTop: "1.5rem", fontSize: "2rem" }}>
+            💍🌹💍
+          </div>
         </div>
       </div>
 
-      {/* THE PROPOSAL */}
-      <div className="proposal-section" ref={addFadeRef} style={{ position: "relative", zIndex: 1 }}>
+      {/* ── THE PROPOSAL ── */}
+      <div
+        className="proposal-section"
+        ref={addFadeRef}
+        style={{ position: "relative", zIndex: 1 }}
+      >
         <div className="fade-in" ref={addFadeRef}>
           <div className="ring-anim">💍</div>
           <h2 className="big-question">Will You Be My Valentine?</h2>
           <p className="proposal-text">
-            You are the missing piece I never knew I was looking for. Being with you feels like home, 
-            like every love song finally makes sense. I want to write our story together, 
-            one beautiful chapter at a time. 💕
+            You are the missing piece I never knew I was looking for. Being
+            with you feels like home, like every love song finally makes
+            sense. I want to write our story together, one beautiful chapter
+            at a time. 💕
           </p>
+
           <div className="btn-group">
             <button className="btn-yes" onClick={handleYes}>
               💗 Yes, of course!
@@ -698,23 +758,40 @@ export default function ValentineProposal() {
               onMouseEnter={handleNoHover}
               onClick={handleNoHover}
             >
-              {noMoved > 3 ? "Still no... 😅" : noMoved > 1 ? "Hmm... 🤔" : "Maybe no..."}
+              {noMoved > 5
+                ? "😂 Just say yes!"
+                : noMoved > 2
+                ? "Hmm... 🤔"
+                : "Maybe no..."}
             </button>
           </div>
+
           {noMoved > 0 && !yesClicked && (
-            <p style={{ color: "var(--rose)", fontFamily: "'Dancing Script', cursive", fontSize: "1.2rem", animation: "slideUp 0.5s ease" }}>
-              {noMoved > 5 ? "😂 You can't escape! Just say yes! 💕" : noMoved > 2 ? "The button keeps running away 🏃‍💨" : "You can't click that button! 😏"}
+            <p
+              style={{
+                color: "var(--rose)",
+                fontFamily: "'Dancing Script', cursive",
+                fontSize: "1.2rem",
+                animation: "slideUp 0.5s ease",
+              }}
+            >
+              {noMoved > 5
+                ? "😂 You can't escape! Just say yes! 💕"
+                : noMoved > 2
+                ? "The button keeps running away 🏃‍💨"
+                : "You can't click that button! 😏"}
             </p>
           )}
         </div>
       </div>
 
-      {/* FOOTER */}
+      {/* ── FOOTER ── */}
       <footer className="footer">
-        Made with <span>♥</span> just for you · Happy Valentine's Day <span>💝</span>
+        Made with <span>♥</span> just for you · Happy Valentine's Day{" "}
+        <span>💝</span>
       </footer>
 
-      {/* CELEBRATION OVERLAY */}
+      {/* ── CELEBRATION OVERLAY ── */}
       {yesClicked && (
         <div className="celebration">
           <div className="confetti-burst">
@@ -728,19 +805,34 @@ export default function ValentineProposal() {
                   animationDuration: `${c.duration}s`,
                   fontSize: `${1 + Math.random()}rem`,
                 }}
-              >{c.emoji}</span>
+              >
+                {c.emoji}
+              </span>
             ))}
           </div>
           <div className="celeb-hearts">💗</div>
           <h1 className="celeb-title">She said Yes! 🎉</h1>
           <p className="celeb-sub">
-            You just made me the happiest person alive.<br />
+            You just made me the happiest person alive.
+            <br />
             Happy Valentine's Day, my love. 💕
           </p>
-          <div style={{ fontSize: "3rem", animation: "heartBeat 1.2s ease-in-out infinite" }}>
+          <div
+            style={{
+              fontSize: "3rem",
+              animation: "heartBeat 1.2s ease-in-out infinite",
+            }}
+          >
             💍🌹💗🥂🌸
           </div>
-          <p style={{ fontFamily: "'Dancing Script', cursive", fontSize: "1.3rem", color: "var(--soft)", marginTop: "1.5rem" }}>
+          <p
+            style={{
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: "1.3rem",
+              color: "var(--soft)",
+              marginTop: "1.5rem",
+            }}
+          >
             Forever & always yours ♥
           </p>
         </div>
