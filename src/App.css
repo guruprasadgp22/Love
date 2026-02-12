@@ -1,38 +1,288 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.main {
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  background: linear-gradient(135deg, #ff4e8a, #ff85b3, #ffc3d9);
+  overflow: hidden;
+  position: relative;
+  animation: bgGlow 6s infinite alternate;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Background Glow Animation */
+@keyframes bgGlow {
+  0% {
+    filter: brightness(1);
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+    filter: brightness(1.2);
+  }
+}
+
+.container {
+  width: 90%;
+  max-width: 650px;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 45px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 2;
+  animation: popIn 1.2s ease;
+}
+
+/* Container pop animation */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.title {
+  font-size: 2.6rem;
+  color: white;
+  font-weight: bold;
+  animation: heartbeat 1.5s infinite;
+}
+
+/* Heartbeat */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.08);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  color: white;
+  opacity: 0.9;
+  animation: fadeDown 1.2s ease;
+}
+
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.imgBox {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.cuteImg {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  animation: floatImg 2.5s infinite ease-in-out;
+}
+
+.gfImg {
+  border: 3px solid white;
+  transform: scale(1.05);
+}
+
+/* Image floating */
+@keyframes floatImg {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.question {
+  font-size: 1.9rem;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  animation: glowText 2s infinite alternate;
+}
+
+/* glowing text */
+@keyframes glowText {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+  }
+}
+
+.buttons {
+  position: relative;
+  height: 150px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.yesBtn {
+  background: #00c853;
+  color: white;
+  box-shadow: 0 0 18px rgba(0, 200, 83, 0.8);
+  animation: glowGreen 1.5s infinite alternate;
+}
+
+@keyframes glowGreen {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 28px rgba(0, 200, 83, 1);
+  }
+}
+
+.yesBtn:hover {
+  transform: scale(1.15);
+}
+
+.noBtn {
+  background: #ff1744;
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 18px rgba(255, 23, 68, 0.8);
+  transition: 0.2s ease;
+}
+
+.noBtn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* YES PAGE */
+.yesPage {
+  animation: popIn 1.2s ease;
+}
+
+.yesTitle {
+  font-size: 2.8rem;
+  color: white;
+  font-weight: bold;
+  animation: bounceText 1.5s infinite;
+}
+
+@keyframes bounceText {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.yesText {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  color: white;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.gifImg {
+  margin-top: 25px;
+  width: 300px;
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  animation: floatGif 2.5s infinite ease-in-out;
+}
+
+@keyframes floatGif {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.finalText {
+  margin-top: 20px;
+  font-size: 1.8rem;
+  color: white;
+  font-weight: bold;
+  animation: glowText 2s infinite alternate;
+}
+
+/* Floating Hearts */
+.hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  animation: floatHeart 4s infinite ease-in-out;
+  opacity: 0.85;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-35px) scale(1.3);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
   }
 }
